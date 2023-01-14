@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2462FEA2296E3C32000FCE73 /* Swift_HoursApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEA1296E3C32000FCE73 /* Swift_HoursApp.swift */; };
-		2462FEA4296E3C32000FCE73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEA3296E3C32000FCE73 /* ContentView.swift */; };
+		2462FEA2296E3C32000FCE73 /* Swift_Hours_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEA1296E3C32000FCE73 /* Swift_Hours_App.swift */; };
 		2462FEA6296E3C34000FCE73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2462FEA5296E3C34000FCE73 /* Assets.xcassets */; };
 		2462FEA9296E3C34000FCE73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2462FEA8296E3C34000FCE73 /* Preview Assets.xcassets */; };
 		2462FEAB296E3C34000FCE73 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEAA296E3C34000FCE73 /* Persistence.swift */; };
@@ -16,6 +15,17 @@
 		2462FEB9296E3C34000FCE73 /* Swift_HoursTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEB8296E3C34000FCE73 /* Swift_HoursTests.swift */; };
 		2462FEC3296E3C34000FCE73 /* Swift_HoursUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEC2296E3C34000FCE73 /* Swift_HoursUITests.swift */; };
 		2462FEC5296E3C34000FCE73 /* Swift_HoursUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEC4296E3C34000FCE73 /* Swift_HoursUITestsLaunchTests.swift */; };
+		2462FED5296E3D91000FCE73 /* JobsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FED4296E3D91000FCE73 /* JobsView.swift */; };
+		2462FED7296E3DA0000FCE73 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FED6296E3DA0000FCE73 /* EntriesView.swift */; };
+		2462FED9296E3DBF000FCE73 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FED8296E3DBF000FCE73 /* MainTabView.swift */; };
+		2462FEDB296E481A000FCE73 /* JobItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEDA296E481A000FCE73 /* JobItem.swift */; };
+		24B278D62970F00E003D1ACD /* JobModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B278D52970F00E003D1ACD /* JobModifyView.swift */; };
+		24C48382296F93A100A19DA3 /* PressActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C48381296F93A100A19DA3 /* PressActions.swift */; };
+		24DECE4329723E24008C2213 /* WorkEntity+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */; };
+		24DECE4529725677008C2213 /* NSManagedObjectContext+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */; };
+		24DECE472972569F008C2213 /* NSSet+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE462972569F008C2213 /* NSSet+Etx.swift */; };
+		24DECE49297256B8008C2213 /* View+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE48297256B8008C2213 /* View+Etx.swift */; };
+		24E588072971E181003622CC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E588062971E181003622CC /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +47,7 @@
 
 /* Begin PBXFileReference section */
 		2462FE9E296E3C32000FCE73 /* Swift Hours.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift Hours.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2462FEA1296E3C32000FCE73 /* Swift_HoursApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_HoursApp.swift; sourceTree = "<group>"; };
-		2462FEA3296E3C32000FCE73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2462FEA1296E3C32000FCE73 /* Swift_Hours_App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_Hours_App.swift; sourceTree = "<group>"; };
 		2462FEA5296E3C34000FCE73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2462FEA8296E3C34000FCE73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2462FEAA296E3C34000FCE73 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -49,6 +58,17 @@
 		2462FEBE296E3C34000FCE73 /* Swift HoursUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift HoursUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2462FEC2296E3C34000FCE73 /* Swift_HoursUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_HoursUITests.swift; sourceTree = "<group>"; };
 		2462FEC4296E3C34000FCE73 /* Swift_HoursUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_HoursUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2462FED4296E3D91000FCE73 /* JobsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsView.swift; sourceTree = "<group>"; };
+		2462FED6296E3DA0000FCE73 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
+		2462FED8296E3DBF000FCE73 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		2462FEDA296E481A000FCE73 /* JobItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobItem.swift; sourceTree = "<group>"; };
+		24B278D52970F00E003D1ACD /* JobModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobModifyView.swift; sourceTree = "<group>"; };
+		24C48381296F93A100A19DA3 /* PressActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressActions.swift; sourceTree = "<group>"; };
+		24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkEntity+Etx.swift"; sourceTree = "<group>"; };
+		24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Etx.swift"; sourceTree = "<group>"; };
+		24DECE462972569F008C2213 /* NSSet+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSet+Etx.swift"; sourceTree = "<group>"; };
+		24DECE48297256B8008C2213 /* View+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Etx.swift"; sourceTree = "<group>"; };
+		24E588062971E181003622CC /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +119,13 @@
 		2462FEA0296E3C32000FCE73 /* Swift Hours */ = {
 			isa = PBXGroup;
 			children = (
-				2462FEA1296E3C32000FCE73 /* Swift_HoursApp.swift */,
-				2462FEA3296E3C32000FCE73 /* ContentView.swift */,
+				24E588052971E178003622CC /* Logger */,
+				2462FED1296E3CF4000FCE73 /* View */,
+				2462FED2296E3CFC000FCE73 /* Model */,
+				2462FED3296E3D07000FCE73 /* Entity */,
+				24C48380296F938200A19DA3 /* Utility */,
 				2462FEA5296E3C34000FCE73 /* Assets.xcassets */,
+				2462FEA1296E3C32000FCE73 /* Swift_Hours_App.swift */,
 				2462FEAA296E3C34000FCE73 /* Persistence.swift */,
 				2462FEAF296E3C34000FCE73 /* Info.plist */,
 				2462FEAC296E3C34000FCE73 /* Swift_Hours.xcdatamodeld */,
@@ -133,6 +157,52 @@
 				2462FEC4296E3C34000FCE73 /* Swift_HoursUITestsLaunchTests.swift */,
 			);
 			path = "Swift HoursUITests";
+			sourceTree = "<group>";
+		};
+		2462FED1296E3CF4000FCE73 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2462FED4296E3D91000FCE73 /* JobsView.swift */,
+				24B278D52970F00E003D1ACD /* JobModifyView.swift */,
+				2462FEDA296E481A000FCE73 /* JobItem.swift */,
+				2462FED6296E3DA0000FCE73 /* EntriesView.swift */,
+				2462FED8296E3DBF000FCE73 /* MainTabView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2462FED2296E3CFC000FCE73 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2462FED3296E3D07000FCE73 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		24C48380296F938200A19DA3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				24C48381296F93A100A19DA3 /* PressActions.swift */,
+				24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */,
+				24DECE462972569F008C2213 /* NSSet+Etx.swift */,
+				24DECE48297256B8008C2213 /* View+Etx.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		24E588052971E178003622CC /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				24E588062971E181003622CC /* Logger.swift */,
+			);
+			path = Logger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,10 +335,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24DECE4529725677008C2213 /* NSManagedObjectContext+Etx.swift in Sources */,
+				24DECE472972569F008C2213 /* NSSet+Etx.swift in Sources */,
+				24B278D62970F00E003D1ACD /* JobModifyView.swift in Sources */,
+				24DECE4329723E24008C2213 /* WorkEntity+Etx.swift in Sources */,
+				24DECE49297256B8008C2213 /* View+Etx.swift in Sources */,
+				24E588072971E181003622CC /* Logger.swift in Sources */,
 				2462FEAB296E3C34000FCE73 /* Persistence.swift in Sources */,
+				2462FED5296E3D91000FCE73 /* JobsView.swift in Sources */,
+				2462FEDB296E481A000FCE73 /* JobItem.swift in Sources */,
 				2462FEAE296E3C34000FCE73 /* Swift_Hours.xcdatamodeld in Sources */,
-				2462FEA4296E3C32000FCE73 /* ContentView.swift in Sources */,
-				2462FEA2296E3C32000FCE73 /* Swift_HoursApp.swift in Sources */,
+				2462FED9296E3DBF000FCE73 /* MainTabView.swift in Sources */,
+				2462FEA2296E3C32000FCE73 /* Swift_Hours_App.swift in Sources */,
+				24C48382296F93A100A19DA3 /* PressActions.swift in Sources */,
+				2462FED7296E3DA0000FCE73 /* EntriesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
