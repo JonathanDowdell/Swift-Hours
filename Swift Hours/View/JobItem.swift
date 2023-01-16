@@ -173,9 +173,6 @@ struct JobItem: View {
             
             if isDisclosed {
                 actions
-                    .onAppear {
-                        print(self.job.clockedIn)
-                    }
             }
         }
     }
@@ -229,7 +226,8 @@ struct JobItem: View {
             job.clockedIn = false
             clockedIn = false
             isDisclosed = false
-            
+            Logger.log(latestWork.end?.description ?? "")
+            Logger.log(workList.last?.end?.description ?? "")
             latestWork.end = Date()
             try? moc.save(with: .error)
             

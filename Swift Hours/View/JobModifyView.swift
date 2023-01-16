@@ -137,6 +137,7 @@ struct JobModifyView: View {
         job.clockedIn = false
         
         try? moc.save(with: .error)
+        dismiss()
     }
 }
 
