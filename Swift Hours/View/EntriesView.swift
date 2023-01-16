@@ -83,8 +83,8 @@ struct EntriesView: View {
             }
             .onAppear {
 //                initilizer()
-//                initilizer2()
-                initilizer3()
+                initilizer2()
+//                initilizer3()
 //                initilizer4()
             }
         }
@@ -129,6 +129,7 @@ struct EntriesView: View {
     
     func initilizer2() {
         let calendar = Calendar.current
+        workByYearArray = [:]
         for wrk in work {
             let year = calendar.component(.year, from: wrk.safeStart)
             let week = calendar.component(.weekOfYear, from: wrk.safeStart)
