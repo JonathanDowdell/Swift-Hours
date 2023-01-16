@@ -82,7 +82,10 @@ struct EntriesView: View {
                 }
             }
             .onAppear {
-                initilizer2()
+//                initilizer()
+//                initilizer2()
+                initilizer3()
+//                initilizer4()
             }
         }
     }
@@ -144,6 +147,7 @@ struct EntriesView: View {
     }
     
     func initilizer3() {
+        workByYearArray = [:]
         let workArray = Array(work).sorted { $0.safeStart < $1.safeStart }
         let calendar = Calendar.current
         var currentYear = -1
@@ -178,6 +182,26 @@ struct EntriesView: View {
         }
     }
     
+    func initilizer4() {
+        let workArray = Array(work)
+        let calendar = Calendar.current
+        workByYearArray = [:]
+        for wrk in workArray {
+            let year = calendar.component(.year, from: wrk.safeStart)
+            let week = calendar.component(.weekOfYear, from: wrk.safeStart)
+            let day = calendar.component(.weekday, from: wrk.safeStart)
+            if workByYearArray[year] == nil {
+                workByYearArray[year] = [:]
+            }
+            if workByYearArray[year]?[week] == nil {
+                workByYearArray[year]?[week] = [:]
+            }
+            if workByYearArray[year]?[week]?[day] == nil {
+                workByYearArray[year]?[week]?[day] = []
+            }
+            workByYearArray[year]?[week]?[day]?.append(wrk)
+        }
+    }
 }
 
 struct EntriesView_Previews: PreviewProvider {
