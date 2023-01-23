@@ -20,6 +20,7 @@
 		2462FED9296E3DBF000FCE73 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FED8296E3DBF000FCE73 /* MainTabView.swift */; };
 		2462FEDB296E481A000FCE73 /* JobItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2462FEDA296E481A000FCE73 /* JobItem.swift */; };
 		24B278D62970F00E003D1ACD /* JobModifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B278D52970F00E003D1ACD /* JobModifyView.swift */; };
+		24B7E407297A480100870CF2 /* SwiftHours.csv in Resources */ = {isa = PBXBuildFile; fileRef = 24B7E406297A480100870CF2 /* SwiftHours.csv */; };
 		24C48382296F93A100A19DA3 /* PressActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C48381296F93A100A19DA3 /* PressActions.swift */; };
 		24DECE4329723E24008C2213 /* WorkEntity+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */; };
 		24DECE4529725677008C2213 /* NSManagedObjectContext+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */; };
@@ -32,6 +33,8 @@
 		24FCB9D029750CC700B77A48 /* EntryDayItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FCB9CF29750CC700B77A48 /* EntryDayItem.swift */; };
 		24FCB9D229750D3A00B77A48 /* Array+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FCB9D129750D3A00B77A48 /* Array+Etx.swift */; };
 		24FCB9D429750D5700B77A48 /* Date+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FCB9D329750D5700B77A48 /* Date+Etx.swift */; };
+		24FCB9D62975118600B77A48 /* EntryMonthItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FCB9D52975118600B77A48 /* EntryMonthItem.swift */; };
+		24FCB9D8297516D300B77A48 /* EntryYearItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24FCB9D7297516D300B77A48 /* EntryYearItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +72,7 @@
 		2462FED8296E3DBF000FCE73 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		2462FEDA296E481A000FCE73 /* JobItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobItem.swift; sourceTree = "<group>"; };
 		24B278D52970F00E003D1ACD /* JobModifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobModifyView.swift; sourceTree = "<group>"; };
+		24B7E406297A480100870CF2 /* SwiftHours.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftHours.csv; sourceTree = "<group>"; };
 		24C48381296F93A100A19DA3 /* PressActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressActions.swift; sourceTree = "<group>"; };
 		24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkEntity+Etx.swift"; sourceTree = "<group>"; };
 		24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Etx.swift"; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 		24FCB9CF29750CC700B77A48 /* EntryDayItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDayItem.swift; sourceTree = "<group>"; };
 		24FCB9D129750D3A00B77A48 /* Array+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Etx.swift"; sourceTree = "<group>"; };
 		24FCB9D329750D5700B77A48 /* Date+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Etx.swift"; sourceTree = "<group>"; };
+		24FCB9D52975118600B77A48 /* EntryMonthItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryMonthItem.swift; sourceTree = "<group>"; };
+		24FCB9D7297516D300B77A48 /* EntryYearItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryYearItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,10 +180,13 @@
 		2462FED1296E3CF4000FCE73 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				24B7E406297A480100870CF2 /* SwiftHours.csv */,
 				2462FED4296E3D91000FCE73 /* JobsView.swift */,
 				24B278D52970F00E003D1ACD /* JobModifyView.swift */,
 				2462FEDA296E481A000FCE73 /* JobItem.swift */,
 				2462FED6296E3DA0000FCE73 /* EntriesView.swift */,
+				24FCB9D7297516D300B77A48 /* EntryYearItem.swift */,
+				24FCB9D52975118600B77A48 /* EntryMonthItem.swift */,
 				24FCB9CD29750CAA00B77A48 /* EntryWeekItem.swift */,
 				24FCB9CF29750CC700B77A48 /* EntryDayItem.swift */,
 				24FCB9C8297342F500B77A48 /* EntryItem.swift */,
@@ -329,6 +338,7 @@
 			files = (
 				2462FEA9296E3C34000FCE73 /* Preview Assets.xcassets in Resources */,
 				2462FEA6296E3C34000FCE73 /* Assets.xcassets in Resources */,
+				24B7E407297A480100870CF2 /* SwiftHours.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24FCB9D8297516D300B77A48 /* EntryYearItem.swift in Sources */,
 				24DECE4529725677008C2213 /* NSManagedObjectContext+Etx.swift in Sources */,
 				24FCB9D229750D3A00B77A48 /* Array+Etx.swift in Sources */,
 				24DECE472972569F008C2213 /* NSSet+Etx.swift in Sources */,
@@ -363,6 +374,7 @@
 				24E588072971E181003622CC /* Logger.swift in Sources */,
 				2462FEAB296E3C34000FCE73 /* Persistence.swift in Sources */,
 				24FCB9CE29750CAA00B77A48 /* EntryWeekItem.swift in Sources */,
+				24FCB9D62975118600B77A48 /* EntryMonthItem.swift in Sources */,
 				2462FED5296E3D91000FCE73 /* JobsView.swift in Sources */,
 				2462FEDB296E481A000FCE73 /* JobItem.swift in Sources */,
 				2462FEAE296E3C34000FCE73 /* Swift_Hours.xcdatamodeld in Sources */,

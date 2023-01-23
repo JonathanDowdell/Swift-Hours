@@ -228,7 +228,9 @@ struct JobItem: View {
             isDisclosed = false
             Logger.log(latestWork.end?.description ?? "")
             Logger.log(workList.last?.end?.description ?? "")
-            latestWork.end = Date()
+            var dateComponents = DateComponents()
+            dateComponents.hour = Int.random(in: 1...7)
+            latestWork.end = Calendar.current.date(byAdding: dateComponents, to: latestWork.safeStart)
             try? moc.save(with: .error)
             
             Logger.log("CLOCKED OUT")

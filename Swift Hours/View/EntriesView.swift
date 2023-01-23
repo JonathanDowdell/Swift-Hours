@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct EntriesView: View {
     
     @Environment(\.managedObjectContext) private var moc
@@ -16,23 +14,54 @@ struct EntriesView: View {
     @FetchRequest(entity: WorkEntity.entity(), sortDescriptors: [])
     private var workEntities: FetchedResults<WorkEntity>
     
-    @State private var yearWorkEntityDictionary: [Int: [Int: [Int: [WorkEntity]]]] = [:]
+    @FetchRequest(entity: JobEntity.entity(), sortDescriptors: [])
+    private var jobs: FetchedResults<JobEntity>
+    
+    @State private var yearWorkEntityDictionary: [Int: [Int: [Int: [Int: [WorkEntity]]]]] = [:]
+    
+    @AppStorage("lastGrouping") private var groupingBy: GroupingBy = .Days
     
     @State private var searchText = ""
+    
+    @State private var showGrouping = false
+    
+    @State private var firstLoad = true
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(yearWorkEntityDictionary.keys.sorted(by: >), id: \.self) { year in
-                    if let weeksArray = yearWorkEntityDictionary[year] {
-                        EntryWeekItem(weekWorkEntityDictionary: weeksArray)
-                    }
-                }
+                EntryYearItem(yearWorkEntityDictionary: yearWorkEntityDictionary, viewBy: $groupingBy)
             }
-            .navigationBarTitle("Days")
+            .navigationBarTitle(groupingBy.rawValue)
             .searchable(text: $searchText)
             .onAppear {
                 initilizer()
+                if firstLoad {
+                    loadCSV()
+                    firstLoad = false
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack {
+                        Button {
+                            withAnimation() {
+                                showGrouping.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
+                        }
+
+                        if showGrouping {
+                            Picker("Group By", selection: $groupingBy) {
+                                ForEach(GroupingBy.allCases, id: \.self) {
+                                    Text($0.rawValue)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                    }
+                }
             }
         }
     }
@@ -40,20 +69,73 @@ struct EntriesView: View {
     func initilizer() {
         let calendar = Calendar.current
         yearWorkEntityDictionary = [:]
-        for wrk in workEntities {
-            let year = calendar.component(.year, from: wrk.safeStart)
-            let week = calendar.component(.weekOfYear, from: wrk.safeStart)
-            let day = calendar.component(.weekday, from: wrk.safeStart)
+        for workEntity in workEntities {
+            let year = calendar.component(.year, from: workEntity.safeStart)
+            let month = calendar.component(.month, from: workEntity.safeStart)
+            let week = calendar.component(.weekOfYear, from: workEntity.safeStart)
+            let day = calendar.component(.weekday, from: workEntity.safeStart)
+            
             if yearWorkEntityDictionary[year] == nil {
                 yearWorkEntityDictionary[year] = [:]
             }
-            if yearWorkEntityDictionary[year]?[week] == nil {
-                yearWorkEntityDictionary[year]?[week] = [:]
+            
+            if yearWorkEntityDictionary[year]?[month] == nil {
+                yearWorkEntityDictionary[year]?[month] = [:]
             }
-            if yearWorkEntityDictionary[year]?[week]?[day] == nil {
-                yearWorkEntityDictionary[year]?[week]?[day] = []
+            
+            if yearWorkEntityDictionary[year]?[month]?[week] == nil {
+                yearWorkEntityDictionary[year]?[month]?[week] = [:]
             }
-            yearWorkEntityDictionary[year]?[week]?[day]?.append(wrk)
+            
+            if yearWorkEntityDictionary[year]?[month]?[week]?[day] == nil {
+                yearWorkEntityDictionary[year]?[month]?[week]?[day] = []
+            }
+            
+            yearWorkEntityDictionary[year]?[month]?[week]?[day]?.append(workEntity)
+        }
+    }
+    
+    func loadCSV() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy hh:mm a"
+        if let path = Bundle.main.path(forResource: "SwiftHours", ofType: "csv") {
+            do {
+                let csvString = try String(contentsOfFile: path, encoding: .utf8)
+                let rows = csvString.components(separatedBy: "\n")
+                var startDate = 1
+                for row in rows {
+                    let rowArray = row.components(separatedBy: ",")
+                    guard rowArray.count > 1 else {
+                        return
+                    }
+                    Logger.log(rowArray.description)
+                    
+                    if let job = jobs.first(where: { $0.name == rowArray[2] }) {
+                        let work = WorkEntity(context: moc)
+                        work.start = dateFormatter.date(from: "12-\(startDate)-2022 05:00 AM")
+                        work.end = dateFormatter.date(from: "12-\(startDate)-2022  0\(Int.random(in: 6 ... 9)):00 AM")
+                        job.addToWork(work)
+                        work.job = job
+                    } else {
+                        let job = JobEntity(context: moc)
+                        job.schedule = rowArray[0]
+                        job.rate = Double(rowArray[1]) ?? 0.0
+                        job.name = rowArray[2]
+                        job.id = UUID()
+                        job.estimatedTaxRate = NSDecimalNumber(string: rowArray[4])
+                        job.clockedIn = false
+                        let work = WorkEntity(context: moc)
+                        work.start = dateFormatter.date(from: "12-\(startDate)-2022 05:00 AM")
+                        work.end = dateFormatter.date(from: "12-\(startDate)-2022  0\(Int.random(in: 6 ... 9)):00 AM")
+                        job.addToWork(work)
+                        work.job = job
+                    }
+                    startDate += 1
+                    try moc.save()
+                }
+            } catch {
+                Logger.log(error.localizedDescription)
+            }
         }
     }
 }
@@ -61,5 +143,11 @@ struct EntriesView: View {
 struct EntriesView_Previews: PreviewProvider {
     static var previews: some View {
         EntriesView()
+    }
+}
+
+extension EntriesView {
+    enum GroupingBy: String, CaseIterable {
+    case Days, Weeks, Months, Jobs
     }
 }

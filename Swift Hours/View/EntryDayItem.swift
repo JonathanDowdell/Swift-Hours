@@ -13,29 +13,23 @@ struct EntryDayItem: View {
     
     var body: some View {
         ForEach(dayWorkEntityDictionary.keys.sorted(by: >), id: \.self) { dayKey in
-            if let dayNumber = Int(dayKey.description) {
-                Section(getDayOfTheWeekName(dayOfWeekNumber: dayNumber)) {
-                    if let workEntityArray = dayWorkEntityDictionary[dayKey] {
-                        ForEach(getWorkEntriesGroupedByJob(workEntityArray: workEntityArray), id: \.self) { workEntry in
-                            EntryItem(workEntry: workEntry)
-                        }
+            if let workEntityArray = dayWorkEntityDictionary[dayKey], let workEntity = workEntityArray.first {
+                Section(getDayOfTheWeekName(workEntity: workEntity)) {
+                    ForEach(getWorkEntriesGroupedByJob(workEntityArray: workEntityArray), id: \.self) { workEntry in
+                        EntryItem(workEntry: workEntry)
                     }
                 }
             }
         }
     }
     
-    private func getDayOfTheWeekName(dayOfWeekNumber: Int) -> String {
-        let calendar = Calendar.current
-        let today = Date()
-        var dateComponents = calendar.dateComponents([.year, .month, .day], from: today)
-        dateComponents.weekday = dayOfWeekNumber
-        let date = calendar.date(from: dateComponents)
-        return date?.EEEE ?? ""
+    private func getDayOfTheWeekName(workEntity: WorkEntity) -> String {
+        return workEntity.safeStart.EEEE
     }
     
     private func getWorkEntriesGroupedByJob(workEntityArray: [WorkEntity]) -> [WorkEntry] {
-        let grouping = Dictionary(grouping: workEntityArray) { $0.job! }
+        let workEntities = workEntityArray.compactMap { $0.job == nil ? nil : $0 }
+        let grouping = Dictionary(grouping: workEntities) { $0.job! }
         let workEntries = grouping.map { WorkEntry(job: $0.key, work: $0.value) }
         return workEntries
     }

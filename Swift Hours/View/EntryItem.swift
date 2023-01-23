@@ -13,6 +13,14 @@ struct EntryItem: View {
     
     private var workEntry: WorkEntry
     
+    private var textWidth: Int {
+        if value.count >= 6 {
+            return 65
+        } else {
+            return 55
+        }
+    }
+    
     init(workEntry: WorkEntry) {
         self.workEntry = workEntry
     }
@@ -23,11 +31,16 @@ struct EntryItem: View {
             
             Spacer()
             
-            Text("\(workEntry.work.count)")
-                .foregroundColor(.green)
-                .padding(.horizontal)
-            
-            Text(value)
+            HStack(alignment: .lastTextBaseline, spacing: 10) {
+                Text("\(workEntry.work.count)")
+                    .foregroundColor(.green)
+                
+                HStack {
+                    Spacer()
+                    Text(value)
+                }
+                .frame(width: CGFloat(textWidth))
+            }
         }
         .onAppear {
             initilizer()
@@ -44,7 +57,11 @@ struct EntryItem: View {
                 value = "0:\(hoursMinutes.minutes)"
             }
         } else {
-            value = "\(hoursMinutes.hours):\(hoursMinutes.minutes)"
+            if hoursMinutes.minutes < 10 {
+                value = "\(hoursMinutes.hours):0\(hoursMinutes.minutes)"
+            } else {
+                value = "\(hoursMinutes.hours):\(hoursMinutes.minutes)"
+            }
         }
     }
 }

@@ -22,11 +22,11 @@ struct JobsView: View {
     private var work: FetchedResults<WorkEntity>
     
     private var clockedInJobs: [JobEntity] {
-        return filterSearch(of: jobs.filter { $0.clockedIn })
+        return filterSearch(of: jobs.filter { $0.clockedIn }.sorted(by: { $0.name ?? "" < $1.name ?? "" }))
     }
     
     private var clockedOutJobs: [JobEntity] {
-        return filterSearch(of: jobs.filter { !$0.clockedIn })
+        return filterSearch(of: jobs.filter { !$0.clockedIn }.sorted(by: { $0.name ?? "" < $1.name ?? "" }))
     }
     
     var body: some View {
@@ -52,7 +52,7 @@ struct JobsView: View {
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            moc.delete(clockedInJobs[index])
+                            moc.delete(clockedOutJobs[index])
                             try? moc.save(with: .error)
                         }
                     }
