@@ -59,7 +59,7 @@ struct JobItem: View {
     
     private var startAtBtn: some View {
         Button {
-            
+            viewModel.showStartAtView.toggle()
         } label: {
             HStack {
                 Spacer()
@@ -177,6 +177,12 @@ struct JobItem: View {
             content
         }
         .buttonStyle(.plain)
+        .popover(isPresented: $viewModel.showStartAtView) {
+            NavigationStack {
+                StartAtView()
+                    .navigationTitle(viewModel.job.name ?? "")
+            }
+        }
     }
 }
 

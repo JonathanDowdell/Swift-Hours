@@ -13,13 +13,15 @@ extension EntriesView {
         
         @Published var yearWorkEntityDictionary: [Int: [Int: [Int: [Int: [WorkEntity]]]]] = [:]
         
-        @Published var monthWorkEntityDictionary: [Int: [Int: [Int: [WorkEntity]]]] = [:]
-        
         @Published var workEntryByJob: [WorkEntry] = []
         
         @Published var workEntryByMonth: [MonthWorkEntry] = []
         
         @Published var workEntryByWeek: [WeekWorkEntry] = []
+        
+        @Published var searchText = ""
+        
+        @Published var showGrouping = false
         
         private var cancellableSet = Set<AnyCancellable>()
         
@@ -30,8 +32,8 @@ extension EntriesView {
                 guard let self = self else { return }
                 self.yearWorkEntityDictionary = self.aggregateWorkToYearly(work)
                 self.workEntryByJob = self.workEntriesGroupedByJob(self.yearWorkEntityDictionary)
-                self.workEntryByMonth = self.monthWorkEntries(self.yearWorkEntityDictionary)
-                self.workEntryByWeek = self.playground(self.yearWorkEntityDictionary)
+                self.workEntryByMonth = self.groupMonthWorkEntries(self.yearWorkEntityDictionary)
+                self.workEntryByWeek = self.groupWeekWorkEntries(self.yearWorkEntityDictionary)
             }
             .store(in: &cancellableSet)
         }
@@ -42,7 +44,7 @@ extension EntriesView {
             }
         }
         
-        func playground(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [WeekWorkEntry] {
+        func groupWeekWorkEntries(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [WeekWorkEntry] {
             var weekEntries = [WeekWorkEntry]()
             for key in yearWorkEntityDictionary.keys {
                 if let yearsDictionary = yearWorkEntityDictionary[key] {
@@ -51,8 +53,8 @@ extension EntriesView {
                         if let monthValue = monthValue {
                             for weekKey in monthValue.keys {
                                 let week = monthValue[weekKey]
-                                if let value = week.flatMap { $0.values.flatMap { $0 } }, let date = value.first?.safeStart {
-                                    weekEntries.append(WeekWorkEntry(date: date, workEntry: workEntriesGroupedByWeek(week: value)))
+                                if let value = week.flatMap({ $0.values.flatMap { $0 } }), let date = value.first?.safeStart {
+                                    weekEntries.append(WeekWorkEntry(date: date, workEntry: groupWorkEntriesByWeek(value)))
                                 }
                             }
                         }
@@ -62,18 +64,20 @@ extension EntriesView {
             return weekEntries
         }
         
-        func workEntriesGroupedByWeek(week: [WorkEntity]) -> [WorkEntry] {
+        func groupWorkEntriesByWeek(_ workEntities: [WorkEntity]) -> [WorkEntry] {
             var workEntries = [WorkEntry]()
-            let workGroupedByJob = Dictionary(grouping: week, by: { $0.job })
-            for (key, value) in workGroupedByJob {
+            let workGroupedByJob = Dictionary(grouping: workEntities, by: { $0.job })
+            for (key, workEntities) in workGroupedByJob {
                 if let job = key {
-                    workEntries.append(WorkEntry(job: job, work: value))
+                    workEntries.append(WorkEntry(job: job, work: workEntities))
                 }
             }
             return workEntries
         }
         
-        func monthWorkEntries(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [MonthWorkEntry] {
+        ///===========================================================================>
+        
+        func groupMonthWorkEntries(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [MonthWorkEntry] {
             var monthWorkEntriesList = [MonthWorkEntry]()
             let yearWorkEntityDictionary = data
             for key in yearWorkEntityDictionary.keys {
@@ -81,7 +85,7 @@ extension EntriesView {
                     for monthKey in value.keys {
                         let monthValue = value[monthKey]
                         if let monthDate = monthValue?.values.first?.values.first?.first?.safeStart, let monthValue = monthValue {
-                            let monthWorkEntry = MonthWorkEntry(date: monthDate, workEntry: workEntriesGroupByMonth(monthValue))
+                            let monthWorkEntry = MonthWorkEntry(date: monthDate, workEntry: groupWorkEntriesByJob(monthValue))
                             monthWorkEntriesList.append(monthWorkEntry)
                         }
                     }
@@ -90,7 +94,7 @@ extension EntriesView {
             return monthWorkEntriesList
         }
         
-        func workEntriesGroupByMonth(_ data: [Int: [Int: [WorkEntity]]]) -> [WorkEntry] {
+        func groupWorkEntriesByJob(_ data: [Int: [Int: [WorkEntity]]]) -> [WorkEntry] {
             var workEntries = [WorkEntry]()
             let data = data.values.flatMap { $0.values.flatMap { $0 } }
             let dataGroupedByJob = Dictionary(grouping: data, by: { $0.job })
@@ -102,6 +106,8 @@ extension EntriesView {
             }
             return workEntries
         }
+        
+        ///===========================================================================>
         
         func workEntriesGroupedByJob(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [WorkEntry] {
             let data = data.values.flatMap { $0.values.flatMap { $0.values.flatMap { $0.flatMap { $0.value.compactMap { $0 } } } } }

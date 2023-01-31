@@ -29,6 +29,8 @@
 		24C8B408298579D000CBC355 /* JobItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C8B407298579D000CBC355 /* JobItemViewModel.swift */; };
 		24C8B40A29877C9900CBC355 /* MonthWorkEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C8B40929877C9900CBC355 /* MonthWorkEntry.swift */; };
 		24C8B40C2988B4E700CBC355 /* WeekWorkEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C8B40B2988B4E700CBC355 /* WeekWorkEntry.swift */; };
+		24C8B40E2988C51300CBC355 /* DateFormatter+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C8B40D2988C51300CBC355 /* DateFormatter+Etx.swift */; };
+		24C8B4102988CA1400CBC355 /* StartAtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C8B40F2988CA1400CBC355 /* StartAtView.swift */; };
 		24DECE4329723E24008C2213 /* WorkEntity+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */; };
 		24DECE4529725677008C2213 /* NSManagedObjectContext+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */; };
 		24DECE472972569F008C2213 /* NSSet+Etx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DECE462972569F008C2213 /* NSSet+Etx.swift */; };
@@ -88,6 +90,8 @@
 		24C8B407298579D000CBC355 /* JobItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobItemViewModel.swift; sourceTree = "<group>"; };
 		24C8B40929877C9900CBC355 /* MonthWorkEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthWorkEntry.swift; sourceTree = "<group>"; };
 		24C8B40B2988B4E700CBC355 /* WeekWorkEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekWorkEntry.swift; sourceTree = "<group>"; };
+		24C8B40D2988C51300CBC355 /* DateFormatter+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Etx.swift"; sourceTree = "<group>"; };
+		24C8B40F2988CA1400CBC355 /* StartAtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartAtView.swift; sourceTree = "<group>"; };
 		24DECE4229723E24008C2213 /* WorkEntity+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkEntity+Etx.swift"; sourceTree = "<group>"; };
 		24DECE4429725677008C2213 /* NSManagedObjectContext+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Etx.swift"; sourceTree = "<group>"; };
 		24DECE462972569F008C2213 /* NSSet+Etx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSet+Etx.swift"; sourceTree = "<group>"; };
@@ -215,6 +219,7 @@
 				24FCB9CF29750CC700B77A48 /* EntryDayItem.swift */,
 				24FCB9C8297342F500B77A48 /* EntryItem.swift */,
 				2462FED8296E3DBF000FCE73 /* MainTabView.swift */,
+				24C8B40F2988CA1400CBC355 /* StartAtView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				24DECE48297256B8008C2213 /* View+Etx.swift */,
 				24FCB9D129750D3A00B77A48 /* Array+Etx.swift */,
 				24FCB9D329750D5700B77A48 /* Date+Etx.swift */,
+				24C8B40D2988C51300CBC355 /* DateFormatter+Etx.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -413,8 +419,10 @@
 				24DECE49297256B8008C2213 /* View+Etx.swift in Sources */,
 				24E588072971E181003622CC /* Logger.swift in Sources */,
 				2462FEAB296E3C34000FCE73 /* Persistence.swift in Sources */,
+				24C8B40E2988C51300CBC355 /* DateFormatter+Etx.swift in Sources */,
 				24FCB9CE29750CAA00B77A48 /* EntryWeekItem.swift in Sources */,
 				2432504B297F719D00DA70BF /* JobStorage.swift in Sources */,
+				24C8B4102988CA1400CBC355 /* StartAtView.swift in Sources */,
 				24FCB9D62975118600B77A48 /* EntryMonthItem.swift in Sources */,
 				2462FED5296E3D91000FCE73 /* JobsView.swift in Sources */,
 				2462FEDB296E481A000FCE73 /* JobItem.swift in Sources */,

@@ -15,6 +15,8 @@ extension JobItem {
         
         @Published var clockedIn = false
         
+        @Published var showStartAtView = false
+        
         var job: JobEntity
         
         private var moc: NSManagedObjectContext
