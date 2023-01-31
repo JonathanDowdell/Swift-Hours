@@ -9,23 +9,11 @@ import SwiftUI
 
 struct JobModifyView: View {
     
-    @Environment(\.managedObjectContext) private var moc
-    
     @Environment(\.dismiss) private var dismiss
     
-    @State private var name: String = ""
-    
-    @State private var rate: String = ""
-    
-    @State private var estimatedTaxRate: String = ""
-    
-    @State private var selectedSchedule = Schedule.Weekly
+    @StateObject private var viewModel = ViewModel()
     
     @FocusState private var focuseField: Field?
-    
-    @State private var job: JobEntity?
-    
-    @State private var initialized = false
     
     private let formatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -35,12 +23,12 @@ struct JobModifyView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
+            List {
                 Section {
                     HStack {
                         Text("Name")
                         Spacer()
-                        TextField("Job name is required", text: $name)
+                        TextField("Job name is required", text: $viewModel.name)
                             .focused($focuseField, equals: .name)
                             .multilineTextAlignment(.trailing)
                             .onSubmit {
@@ -51,7 +39,7 @@ struct JobModifyView: View {
                     HStack {
                         Text("Rate")
                         Spacer()
-                        TextField("Optional earnings rate per hour", text: $rate)
+                        TextField("Optional earnings rate per hour", text: $viewModel.rate)
                             .focused($focuseField, equals: .rate)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
@@ -65,7 +53,7 @@ struct JobModifyView: View {
                     HStack {
                         Text("Schedule")
                         Spacer()
-                        Picker("", selection: $selectedSchedule) {
+                        Picker("", selection: $viewModel.selectedSchedule) {
                             ForEach(Schedule.allCases) {
                                 Text($0.rawValue).tag($0)
                             }
@@ -75,7 +63,7 @@ struct JobModifyView: View {
                     HStack {
                         Text("Estimated tax rate")
                         Spacer()
-                        TextField("20", value: $estimatedTaxRate, formatter: formatter)
+                        TextField("0", text: $viewModel.estimatedTaxRate)
                             .focused($focuseField, equals: .estimatedTaxRate)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
@@ -91,13 +79,14 @@ struct JobModifyView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        saveJob()
+                        viewModel.createAndSaveNewJob()
+                        dismiss()
                     } label: {
                         Text("Save")
                             .bold()
                     }
-                    .disabled(name.isEmpty)
-                    .animation(Animation.linear(duration: 0.1), value: name.isEmpty)
+                    .disabled(viewModel.name.isEmpty)
+                    .animation(Animation.linear(duration: 0.1), value: viewModel.name.isEmpty)
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -109,35 +98,12 @@ struct JobModifyView: View {
                 }
             }
         }
-        .onAppear {
-            initialization()
-        }
-    }
-    
-    private func initialization() {
-        if !initialized {
-            self.focuseField = .name
-            self.initialized = true
-        }
     }
     
     private func selectNextField() {
         focuseField = focuseField.map {
             Field(rawValue: $0.rawValue + 1) ?? .name
         }
-    }
-    
-    private func saveJob() {
-        let job = JobEntity(context: moc)
-        job.id = UUID()
-        job.name = self.name
-        job.rate = Double(self.rate) ?? 0.0
-        job.schedule = self.selectedSchedule.rawValue
-        job.estimatedTaxRate = NSDecimalNumber(string: self.estimatedTaxRate)
-        job.clockedIn = false
-        
-        try? moc.save(with: .error)
-        dismiss()
     }
 }
 

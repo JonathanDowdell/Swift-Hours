@@ -9,18 +9,12 @@ import SwiftUI
 
 struct JobItem: View {
     
-    @Environment(\.managedObjectContext) private var moc
-    
-    @State private var isDisclosed = false
-    
-    @State private var clockedIn = false
-    
-    private(set) var job: JobEntity
+    @StateObject var viewModel: ViewModel
     
     private var clockInNowBtn: some View {
         Button {
             withAnimation {
-                clockIn()
+                viewModel.clockIn()
             }
         } label: {
             HStack {
@@ -43,7 +37,7 @@ struct JobItem: View {
     private var clockOutNowBtn: some View {
         Button {
             withAnimation {
-                clockOut()
+                viewModel.clockOut()
             }
         } label: {
             HStack {
@@ -65,7 +59,7 @@ struct JobItem: View {
     
     private var startAtBtn: some View {
         Button {
-            clockedIn.toggle()
+            
         } label: {
             HStack {
                 Spacer()
@@ -81,7 +75,7 @@ struct JobItem: View {
     
     private var stopAtBtn: some View {
         Button {
-            clockedIn.toggle()
+            
         } label: {
             HStack {
                 Spacer()
@@ -134,7 +128,7 @@ struct JobItem: View {
     private var actions: some View {
         VStack {
             HStack {
-                if clockedIn {
+                if viewModel.clockedIn {
                     clockOutNowBtn
                     
                     stopAtBtn
@@ -143,7 +137,6 @@ struct JobItem: View {
                     
                     startAtBtn
                 }
-                
             }
             
             HStack {
@@ -152,14 +145,14 @@ struct JobItem: View {
                 detailsBtn
             }
         }
-        .frame(height: isDisclosed ? nil : 0, alignment: .top)
-        .animation(.default, value: isDisclosed)
+        .frame(height: viewModel.isDisclosed ? nil : 0, alignment: .top)
+        .animation(.default, value: viewModel.isDisclosed)
     }
     
     private var content: some View {
         VStack {
             HStack {
-                Text(job.name ?? "")
+                Text(viewModel.job.name ?? "")
                     .foregroundColor(.primary)
                 Spacer()
                 Button {
@@ -171,7 +164,7 @@ struct JobItem: View {
             }
             .contentShape(Rectangle())
             
-            if isDisclosed {
+            if viewModel.isDisclosed {
                 actions
             }
         }
@@ -179,62 +172,11 @@ struct JobItem: View {
     
     var body: some View {
         Button {
-            isDisclosed.toggle()
+            viewModel.isDisclosed.toggle()
         } label: {
             content
         }
         .buttonStyle(.plain)
-        .onAppear(perform: initialization)
-    }
-    
-    private func initialization() {
-        self.clockedIn = self.job.clockedIn
-    }
-    
-    private func changeJobStatus() {
-        job.clockedIn.toggle()
-        clockedIn.toggle()
-        isDisclosed.toggle()
-        try? moc.save(with: .error)
-        
-        let workEntity = WorkEntity(context: moc)
-        workEntity.rate = job.rate
-        workEntity.start = Date()
-    }
-    
-    private func clockIn() {
-        job.clockedIn = true
-        clockedIn = true
-        isDisclosed = false
-        
-        let workEntity = WorkEntity(context: moc)
-        workEntity.rate = job.rate
-        workEntity.start = Date()
-        workEntity.job = job
-        
-        job.addToWork(workEntity)
-        
-        try? moc.save(with: .error)
-        Logger.log("CLOCKED IN")
-    }
-    
-    private func clockOut() {
-        guard let _work = job.work else { return }
-        let workList: [WorkEntity] = _work.toArray().sorted { $0.start! > $1.start! }
-        
-        if let latestWork = workList.first {
-            job.clockedIn = false
-            clockedIn = false
-            isDisclosed = false
-            Logger.log(latestWork.end?.description ?? "")
-            Logger.log(workList.last?.end?.description ?? "")
-            var dateComponents = DateComponents()
-            dateComponents.hour = Int.random(in: 1...7)
-            latestWork.end = Calendar.current.date(byAdding: dateComponents, to: latestWork.safeStart)
-            try? moc.save(with: .error)
-            
-            Logger.log("CLOCKED OUT")
-        }
     }
 }
 

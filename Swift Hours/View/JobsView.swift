@@ -9,63 +9,43 @@ import SwiftUI
 
 struct JobsView: View {
     
-    @Environment(\.managedObjectContext) private var moc
-    
-    @State private var searchText = ""
-    
-    @State private var isPresenting = false
-    
-    @FetchRequest(entity: JobEntity.entity(), sortDescriptors: [])
-    private var jobs: FetchedResults<JobEntity>
-    
-    @FetchRequest(entity: WorkEntity.entity(), sortDescriptors: [])
-    private var work: FetchedResults<WorkEntity>
-    
-    private var clockedInJobs: [JobEntity] {
-        return filterSearch(of: jobs.filter { $0.clockedIn }.sorted(by: { $0.name ?? "" < $1.name ?? "" }))
-    }
-    
-    private var clockedOutJobs: [JobEntity] {
-        return filterSearch(of: jobs.filter { !$0.clockedIn }.sorted(by: { $0.name ?? "" < $1.name ?? "" }))
-    }
+    @StateObject var viewModel = ViewModel()
     
     var body: some View {
         NavigationStack {
             List {
                 Section("On the clock") {
-                    ForEach(clockedInJobs, id: \.self) { job in
-                        JobItem(job: job)
+                    ForEach(viewModel.clockedInJobs, id: \.self) { job in
+                        JobItem(viewModel: .init(jobEntity: job))
                             .buttonStyle(.plain)
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            moc.delete(clockedInJobs[index])
-                            try? moc.save(with: .error)
+                            viewModel.deleteJob(viewModel.clockedInJobs[index])
                         }
                     }
                 }
                 
                 Section("Off the clock") {
-                    ForEach(clockedOutJobs, id: \.self) { job in
-                        JobItem(job: job)
+                    ForEach(viewModel.clockedOutJobs, id: \.self) { job in
+                        JobItem(viewModel: .init(jobEntity: job))
                             .buttonStyle(.plain)
                     }
                     .onDelete { indexSet in
                         for index in indexSet {
-                            moc.delete(clockedOutJobs[index])
-                            try? moc.save(with: .error)
+                            viewModel.deleteJob(viewModel.clockedOutJobs[index])
                         }
                     }
                 }
             }
             .navigationTitle("Jobs")
-            .searchable(text: $searchText)
-            .popover(isPresented: $isPresenting) {
+            .searchable(text: $viewModel.searchText)
+            .popover(isPresented: $viewModel.isPresenting) {
                 JobModifyView()
             }
             .toolbar {
                 Button {
-                    isPresenting.toggle()
+                    viewModel.isPresenting.toggle()
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -74,8 +54,8 @@ struct JobsView: View {
     }
     
     private func filterSearch(of jobs: [JobEntity]) -> [JobEntity] {
-        guard !searchText.isEmpty else { return jobs }
-        return jobs.filter { $0.name?.localizedCaseInsensitiveContains(searchText) ?? false }
+        guard !viewModel.searchText.isEmpty else { return jobs }
+        return jobs.filter { $0.name?.localizedCaseInsensitiveContains(viewModel.searchText) ?? false }
     }
 }
 

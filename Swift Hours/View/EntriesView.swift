@@ -7,7 +7,13 @@
 
 import SwiftUI
 
+//struct EntriesGroupedByMonth: View {
+//    
+//}
+
 struct EntriesView: View {
+    
+    @StateObject var viewModel = ViewModel()
     
     @Environment(\.managedObjectContext) private var moc
     
@@ -27,10 +33,75 @@ struct EntriesView: View {
     
     @State private var firstLoad = true
     
+    var daysSection: some View {
+        Text("Days")
+    }
+    
+    var weeksSection: some View {
+        ForEach(viewModel.workEntryByWeek, id: \.self) { weekEntry in
+            Section(getStartAndEndOfWeekDate(date: weekEntry.date)) {
+                ForEach(weekEntry.workEntry, id: \.self) { week in
+                    EntryItem(workEntry: week)
+                }
+            }
+        }
+    }
+    
+    private func getStartAndEndOfWeekDate(date: Date) -> String {
+        let calendar = Calendar.current
+        let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))
+        let endOfWeek = calendar.date(byAdding: .day, value: 6, to: startOfWeek!)
+
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "MMM dd-"
+        let endDateFormatter = DateFormatter()
+        endDateFormatter.dateFormat = "dd yyyy"
+
+        let startString = startDateFormatter.string(from: startOfWeek!)
+        let endString = endDateFormatter.string(from: endOfWeek!)
+        
+        return startString + endString
+    }
+    
+    var dateFormatter: DateFormatter {
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "MMM yyyy"
+        return startDateFormatter
+    }
+    
+    var monthsSection: some View {
+        
+        ForEach(viewModel.workEntryByMonth, id: \.self) { monthWorkEntry in
+            Section(dateFormatter.string(from: monthWorkEntry.date)) {
+                ForEach(monthWorkEntry.workEntry, id: \.self) { workEntry in
+                    EntryItem(workEntry: workEntry)
+                }
+            }
+        }
+//        ForEach(viewModel.monthWorkEntityDictionary, id: \.self) { month in
+//            Text("Hello World")
+//                .onAppear {
+//                    print(month)
+//                }
+//        }
+    }
+    
+    var jobsSection: some View {
+        ForEach(viewModel.workEntryByJob, id: \.self) { workEntry in
+            EntryItem(workEntry: workEntry)
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             List {
-                EntryYearItem(yearWorkEntityDictionary: yearWorkEntityDictionary, viewBy: $groupingBy)
+                switch groupingBy {
+                case .Days: daysSection
+                case .Weeks: weeksSection
+                case .Months: monthsSection
+                case .Jobs: jobsSection
+                }
+//                EntryYearItem(yearWorkEntityDictionary: yearWorkEntityDictionary, viewBy: $groupingBy)
             }
             .navigationBarTitle(groupingBy.rawValue)
             .searchable(text: $searchText)
