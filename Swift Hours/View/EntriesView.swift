@@ -18,7 +18,7 @@ struct EntriesView: View {
     }
     
     var weeksSection: some View {
-        ForEach(viewModel.workEntryByWeek, id: \.self) { weekEntry in
+        ForEach(viewModel.workEntryByWeek.sorted(by: { $0.date > $1.date }), id: \.self) { weekEntry in
             Section(weekEntry.date.getStartAndEndOfWeekDate()) {
                 ForEach(weekEntry.workEntry.sortedByName(), id: \.self) { week in
                     EntryItem(workEntry: week)

@@ -11,6 +11,10 @@ struct StartAtView: View {
     
     @State private var startDate = Date()
     
+    private var nowDate: Date {
+        return Date()
+    }
+    
     var body: some View {
         VStack {
             DatePicker("Start Date", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
@@ -23,11 +27,11 @@ struct StartAtView: View {
                 HStack {
                     Spacer()
                     Label {
-                        Text("Start At")
+                        Text("Start \(startDate.time(relativeTo: nowDate))")
                     } icon: {
                         Image(systemName: "play.fill")
                             .foregroundColor(.green)
-                    }
+                    }.bold()
                     Spacer()
                 }
                 .padding()
@@ -36,6 +40,8 @@ struct StartAtView: View {
                 .cornerRadius(10)
             }
             .padding()
+            
+            Spacer()
         }
     }
 }

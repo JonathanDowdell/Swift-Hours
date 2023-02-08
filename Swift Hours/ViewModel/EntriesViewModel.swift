@@ -9,6 +9,11 @@ import SwiftUI
 import Combine
 
 extension EntriesView {
+    struct WeekOfYear: Hashable {
+        let year: Int
+        let week: Int
+    }
+    
     class ViewModel: ObservableObject {
         
         @Published var yearWorkEntityDictionary: [Int: [Int: [Int: [Int: [WorkEntity]]]]] = [:]
@@ -33,7 +38,7 @@ extension EntriesView {
                 self.yearWorkEntityDictionary = self.aggregateWorkToYearly(work)
                 self.workEntryByJob = self.workEntriesGroupedByJob(self.yearWorkEntityDictionary)
                 self.workEntryByMonth = self.groupMonthWorkEntries(self.yearWorkEntityDictionary)
-                self.workEntryByWeek = self.groupWeekWorkEntries(self.yearWorkEntityDictionary)
+                self.workEntryByWeek = self.groupWorkByWeekOfYear(work)
             }
             .store(in: &cancellableSet)
         }
@@ -42,6 +47,30 @@ extension EntriesView {
             for set in cancellableSet {
                 set.cancel()
             }
+        }
+        
+        func groupWorkByWeekOfYear(_ workList: [WorkEntity]) -> [WeekWorkEntry] {
+            var workGroupedByWeekOfYear = [WeekOfYear: [WorkEntity]]()
+            var weekEntries = [WeekWorkEntry]()
+            let calendar = Calendar.current
+            for work in workList {
+                let workDate = work.safeStart
+                let year = calendar.component(.year, from: workDate)
+                let weekOfYear = calendar.component(.weekOfYear, from: workDate)
+                let key = WeekOfYear(year: year, week: weekOfYear)
+                if workGroupedByWeekOfYear[key] == nil {
+                    workGroupedByWeekOfYear[key] = [WorkEntity]()
+                }
+                workGroupedByWeekOfYear[key]!.append(work)
+            }
+            
+            let keys = workGroupedByWeekOfYear.keys.sorted(by: { $0.year < $1.year })
+            for key in keys {
+                if let workEntities = workGroupedByWeekOfYear[key], let date = workEntities.first?.safeStart {
+                    weekEntries.append(WeekWorkEntry(date: date, workEntry: groupWorkEntriesByWeek(workEntities)))
+                }
+            }
+            return weekEntries
         }
         
         func groupWeekWorkEntries(_ data: [Int: [Int: [Int: [Int: [WorkEntity]]]]]) -> [WeekWorkEntry] {
@@ -155,7 +184,7 @@ extension EntriesView {
             for workEntity in workEntities {
                 let year = calendar.component(.year, from: workEntity.safeStart)
                 let month = calendar.component(.month, from: workEntity.safeStart)
-                let week = calendar.component(.weekOfYear, from: workEntity.safeStart)
+                let week = calendar.component(.weekOfMonth, from: workEntity.safeStart)
                 let day = calendar.component(.weekday, from: workEntity.safeStart)
                 
                 if workEntitiesDictionary[year] == nil {

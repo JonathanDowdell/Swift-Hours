@@ -25,4 +25,10 @@ extension DateFormatter {
         startDateFormatter.dateFormat = "dd yyyy"
         return startDateFormatter
     }()
+    
+    static let d: DateFormatter = {
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "d"
+        return startDateFormatter
+    }()
 }
