@@ -18,6 +18,8 @@ extension EntriesView {
         
         @Published var yearWorkEntityDictionary: [Int: [Int: [Int: [Int: [WorkEntity]]]]] = [:]
         
+        @Published var workEntryByDay: [Date: [WorkEntry]] = [:]
+        
         @Published var workEntryByJob: [WorkEntry] = []
         
         @Published var workEntryByMonth: [MonthWorkEntry] = []
@@ -36,6 +38,7 @@ extension EntriesView {
             workPublisher.sink { [weak self] work in
                 guard let self = self else { return }
                 self.yearWorkEntityDictionary = self.aggregateWorkToYearly(work)
+                self.workEntryByDay = self.groupWorkByDayOfYear(work)
                 self.workEntryByJob = self.workEntriesGroupedByJob(self.yearWorkEntityDictionary)
                 self.workEntryByMonth = self.groupMonthWorkEntries(self.yearWorkEntityDictionary)
                 self.workEntryByWeek = self.groupWorkByWeekOfYear(work)
@@ -47,6 +50,64 @@ extension EntriesView {
             for set in cancellableSet {
                 set.cancel()
             }
+        }
+        
+        func groupWorkByDayOfYear(_ workList: [WorkEntity]) -> [Date: [WorkEntry]] {
+            let calendar = Calendar.current
+            var workEntitiesGroup = [Date: [WorkEntity]]()
+            var workEntriesGroup = [Date: [WorkEntry]]()
+            
+            for work in workList {
+                let key = calendar.startOfDay(for: work.safeStart)
+                
+                if workEntitiesGroup[key] == nil {
+                    workEntitiesGroup[key] = [WorkEntity]()
+                }
+                
+                workEntitiesGroup[key]?.append(work)
+            }
+            
+            for key in workEntitiesGroup.keys.sorted() {
+                if let workEntities = workEntitiesGroup[key] {
+                    let groupedByJob = Dictionary(grouping: workEntities, by: { $0.job })
+                    let workEntries = groupedByJob.map { WorkEntry(job: $0.key!, work: $0.value) }
+                    workEntriesGroup[key] = workEntries
+                }
+            }
+            
+            return workEntriesGroup
+            
+//            let calendar = Calendar.current
+//            var workGroupedByDayOfYear: [Int: [Int: [WorkEntity]]] = [:]
+//            var wkEntries = [Int: [WorkEntry]]()
+//
+//            for work in workList {
+//                let date = work.safeStart
+//                let day = calendar.component(.day, from: date)
+//                let year = calendar.component(.year, from: date)
+//
+//                if workGroupedByDayOfYear[year] == nil {
+//                    workGroupedByDayOfYear[year] = [day: [work]]
+//                } else if workGroupedByDayOfYear[year]![day] == nil {
+//                    workGroupedByDayOfYear[year]![day] = [work]
+//                } else {
+//                    workGroupedByDayOfYear[year]![day]?.append(work)
+//                }
+//            }
+//
+//            let sortedYears = workGroupedByDayOfYear.keys.sorted()
+//
+//            for year in sortedYears {
+//                let sortedDays = workGroupedByDayOfYear[year]!.keys.sorted()
+//
+//                for day in sortedDays {
+//                    let workForDay = workGroupedByDayOfYear[year]![day]!
+//                    let workGroupedByJob = Dictionary(grouping: workForDay, by: { $0.job })
+//                    let workEntriesForDay = workGroupedByJob.map { WorkEntry(job: $0.key!, work: $0.value) }
+//                    wkEntries[day] = workEntriesForDay
+//                }
+//            }
+//            return wkEntries
         }
         
         func groupWorkByWeekOfYear(_ workList: [WorkEntity]) -> [WeekWorkEntry] {

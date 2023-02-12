@@ -14,7 +14,15 @@ struct EntriesView: View {
     @AppStorage("lastGrouping") private var groupingBy: GroupingBy = .Days
     
     var daysSection: some View {
-        Text("Days")
+        ForEach(viewModel.workEntryByDay.keys.sorted(by: >), id: \.self) { date in
+            Section(DateFormatter.EEEddyyyy.string(from: date)) {
+                if let workEnties = viewModel.workEntryByDay[date] {
+                    ForEach(workEnties.sortedByName(), id: \.self) { value in
+                        EntryItem(workEntry: value)
+                    }
+                }
+            }
+        }
     }
     
     var weeksSection: some View {

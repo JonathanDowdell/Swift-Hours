@@ -31,4 +31,10 @@ extension DateFormatter {
         startDateFormatter.dateFormat = "d"
         return startDateFormatter
     }()
+    
+    static let EEEddyyyy: DateFormatter = {
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "EEE dd, yyyy"
+        return startDateFormatter
+    }()
 }
